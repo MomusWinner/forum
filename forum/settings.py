@@ -35,6 +35,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'forum_app',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -85,7 +86,7 @@ DATABASES = {
         'PASSWORD': getenv('PG_PASSWORD'),
         'HOST': getenv('PG_HOST'),
         'PORT': getenv('PG_PORT'),
-        'OPTIONS': {'options': '-c search_path=public,library'},
+        'OPTIONS': {'options': '-c search_path=public,forum'},
         'TEST': {
             'NAME': 'test_db',
         },
