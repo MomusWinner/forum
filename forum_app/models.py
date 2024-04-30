@@ -5,7 +5,7 @@ from datetime import datetime, date, timezone
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from django.conf.global_settings import AUTH_USER_MODEL
-
+from django.contrib.auth.models import AbstractUser
 
 NAME_MAX_LENGTH = 100
 TITLE_MAX_LEN = 100
@@ -45,17 +45,13 @@ class CreatedMixin(models.Model):
         abstract = True
 
 
-class User(UUIDMixin, CreatedMixin):
-    login = models.TextField('login', null=False, blank=False, max_length=NAME_MAX_LENGTH)
-    password = models.TextField('password', null=False, blank=False, max_length=NAME_MAX_LENGTH)
-    mail = models.TextField('mail',  null=False, blank=False, max_length=MAIL_MAX_LEN)
-
+class User(UUIDMixin, CreatedMixin, AbstractUser):
     def __str__(self) -> str:
         return self.login
         
     class Meta:
         db_table = '"forum"."user"'
-        ordering = ['login']
+#        ordering = ['login']
         verbose_name = 'user'
         verbose_name_plural = 'users'
 
@@ -111,7 +107,7 @@ class Message(UUIDMixin, CreatedMixin):
 
 
     def __str__(self) -> str:
-        return f'{self.user.login}: {self.message_body}'
+        return f'{self.message_body}'
 
     class Meta:
         db_table = '"forum"."message"'
