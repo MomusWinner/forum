@@ -1,3 +1,4 @@
+from typing import Any
 from django.db import models
 from uuid import uuid4
 from datetime import datetime, date, timezone
@@ -63,6 +64,9 @@ class Thread(UUIDMixin, CreatedMixin):
     title = models.TextField('title', null=False, blank=False, max_length=TITLE_MAX_LEN)
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 
+    def __str__(self) -> str:
+        return self.title
+
     class Meta:
         db_table = '"forum"."thread"'
         ordering = ['title']
@@ -74,6 +78,9 @@ class Section(UUIDMixin):
     name = models.TextField('name', null=False, blank=False, max_length=NAME_MAX_LENGTH)
     threads = models.ManyToManyField(Thread, verbose_name='thread', through='SectionThread')
 
+    def __str__(self) -> str:
+        return self.name
+
     class Meta:
         db_table = '"forum"."section"'
         ordering = ['name']
@@ -84,6 +91,9 @@ class Section(UUIDMixin):
 class SectionThread(UUIDMixin):
     section = models.ForeignKey(Section, verbose_name='section', on_delete=models.CASCADE)
     thread = models.ForeignKey(Thread, verbose_name='thraed', on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return f'{self.section}: {self.thread}'
 
     class Meta:
         db_table = '"forum"."section_thread"'
@@ -98,6 +108,10 @@ class Message(UUIDMixin, CreatedMixin):
     message_body = models.TextField('message_body')
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+
+
+    def __str__(self) -> str:
+        return f'{self.user.login}: {self.message_body}'
 
     class Meta:
         db_table = '"forum"."message"'
