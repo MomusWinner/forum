@@ -45,13 +45,11 @@ class CreatedMixin(models.Model):
         abstract = True
 
 
-class User(UUIDMixin, CreatedMixin, AbstractUser):
-    def __str__(self) -> str:
-        return self.login
-        
+class User(UUIDMixin, AbstractUser):
+    
     class Meta:
         db_table = '"forum"."user"'
-#        ordering = ['login']
+        ordering = ['last_name']
         verbose_name = 'user'
         verbose_name_plural = 'users'
 

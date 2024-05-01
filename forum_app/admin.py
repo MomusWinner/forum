@@ -5,7 +5,7 @@ from django.db.models.query import QuerySet
 from .models import User, Section, Thread, Message, SectionThread
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.admin import UserAdmin
-from .models import User
+
 
 admin.site.register(User, UserAdmin)
 
