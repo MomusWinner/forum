@@ -4,7 +4,6 @@ from uuid import uuid4
 from datetime import datetime, date, timezone
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
-from django.conf.global_settings import AUTH_USER_MODEL
 from django.contrib.auth.models import AbstractUser
 
 NAME_MAX_LENGTH = 100
@@ -46,7 +45,6 @@ class CreatedMixin(models.Model):
 
 
 class User(UUIDMixin, AbstractUser):
-    
     class Meta:
         db_table = '"forum"."user"'
         ordering = ['last_name']
