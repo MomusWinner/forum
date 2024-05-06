@@ -31,7 +31,6 @@ def create_api_test(model, url, get_creation_attrs):
             self.assertEqual(self.client.get(url).status_code, status.HTTP_200_OK)
             self.assertEqual(self.client.head(url).status_code, status.HTTP_200_OK)
             self.assertEqual(self.client.options(url).status_code, status.HTTP_200_OK)
-
             self.assertEqual(self.client.post(url, self.creation_attrs).status_code, post_expected)
             
             created_id = model.objects.create(**self.creation_attrs).id
@@ -59,7 +58,30 @@ def create_api_test(model, url, get_creation_attrs):
             )
     return ApiTest
 
+class MessageThread(TestCase):
+    def setUp(self) -> None:
+            self.client = APIClient()
+            self.user = User.objects.create(username='user_test', password='test')
+            self.superuser = User.objects.create(
+                username='admin_test', password='test', is_superuser=True,
+            )
+
+            self.user_token = Token(user=self.user)
+            self.superuser_token = Token(user=self.superuser)
+
+    def test_post(self):
+        self.client.force_authenticate(user=self.superuser, token=self.superuser_token)
+        created_id = Thread.objects.create(title='create_test_thread').id
+ 
+        thread_instance_url = f'/api/thread/{created_id}/'
+        print(thread_instance_url)
+        creation_attrs = {
+            'message_body': 'test_message_body',
+            'thread': thread_instance_url
+        }
+        self.assertEqual(self.client.post('/api/message/', creation_attrs).status_code, 201)
+
+
 url = '/api/'
 ThreadApiTest = create_api_test(Thread, f'{url}thread/', lambda : {'title': 'string'})
-#MessageApiTest = create_api_test(Message,  f'{url}message/', lambda  : { 'message_body': 'Hello world', 'thread': Thread.objects.create(title='some')})
 SectionApiTest = create_api_test(Section, f'{url}section/', lambda : {'name': 'test_section'})
