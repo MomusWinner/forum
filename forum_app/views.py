@@ -51,6 +51,7 @@ def register(request):
         }
     )
 
+UserViewSet = create_viewset(User, UserSerializer)
 ThreadViewSet = create_viewset(Thread, ThreadSerializer)
 SectionViewSet = create_viewset(Section, SectionSerializer)
 MessageViewSet = create_viewset(Message, MessageSerializer)

@@ -3,14 +3,14 @@ from rest_framework import permissions
 from django.urls import path, include, re_path
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
-
+from rest_framework.authtoken.views import obtain_auth_token
 from . import views
 
 router = DefaultRouter()
 router.register(r'section', views.SectionViewSet)
 router.register(r'thread', views.ThreadViewSet)
 router.register(r'message', views.MessageViewSet)
-
+router.register(r'user', views.UserViewSet)
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -45,4 +45,5 @@ urlpatterns = [
     path('api/', include(router.urls), name='api'),
     path('api-auth/', include('rest_framework.urls'), name='rest_framework'),
     path('register/', views.register, name='register'),
+    path('token/', obtain_auth_token),
 ]
