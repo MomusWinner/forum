@@ -19,6 +19,10 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        migrations.RunSQL(
+            "CREATE SCHEMA IF NOT EXISTS forum",
+            "DROP SCHEMA IF EXISTS forum"
+        ),
         migrations.CreateModel(
             name='User',
             fields=[

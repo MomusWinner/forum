@@ -84,11 +84,11 @@ WSGI_APPLICATION = 'forum.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': getenv('PG_DBNAME'),
-        'USER': getenv('PG_USER'),
-        'PASSWORD': getenv('PG_PASSWORD'),
-        'HOST': getenv('PG_HOST'),
-        'PORT': getenv('PG_PORT'),
+        'NAME': getenv('POSTGRES_DB'),
+        'USER': getenv('POSTGRES_USER'),
+        'PASSWORD': getenv('POSTGRES_PASSWORD'),
+        'HOST': getenv('POSTGRES_HOST'),
+        'PORT': getenv('POSTGRES_PORT'),
         'OPTIONS': {'options': '-c search_path=public,forum'},
         'TEST': {
             'NAME': 'test_db',

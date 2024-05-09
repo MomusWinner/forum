@@ -2,19 +2,21 @@ version: '3.8'
 # Поднимаем пять сервисов: django, node, rabbitMQ, postgres, nginx
 services:
   django:
-    build: ./django
+    build: ./django/django_project/
     container_name: djangoapp
     restart: always
     expose:
       - 8000
-    command: >
-      sh -c "nohup python manage.py my_command & python manage.py runserver 0.0.0.0:8000"
-    depends_on:
-      - postgres
+    ports:
+      - '8000:8000'
     volumes:
       - ./django/django_project:/usr/src/app/
       - django_static_volume:/usr/src/app/static
       - django_media_volume:/usr/src/app/media
+    command: >
+      sh -c "nohup python manage.py my_command & python manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      - postgres
     networks:
       - myNetwork
     env_file:
