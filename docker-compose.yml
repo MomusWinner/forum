@@ -1,0 +1,86 @@
+version: '3.8'
+# Поднимаем пять сервисов: django, node, rabbitMQ, postgres, nginx
+services:
+  django:
+    build: ./django
+    container_name: djangoapp
+    restart: always
+    expose:
+      - 8000
+    command: >
+      sh -c "nohup python manage.py my_command & python manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      - postgres
+    volumes:
+      - ./django/django_project:/usr/src/app/
+      - django_static_volume:/usr/src/app/static
+      - django_media_volume:/usr/src/app/media
+    networks:
+      - myNetwork
+    env_file:
+      - ./.env
+
+  # node:
+  #   # Аналогично, build из ./reactapp/dockerfile
+  #   build: ./reactapp
+  #   # имя контейнера
+  #   container_name: reactapp
+  #   # рестарт
+  #   restart: always
+  #   # порты
+  #   ports:
+  #     - 3000:3000
+  #   # команда при запуске
+  #   volumes:
+  #     - ./reactapp/public/:/usr/src/app/public/
+  #     - ./reactapp/src/:/usr/src/app/src/
+  #   command: npm start
+  #   # Зависимость. нет смысла ноде, если некому отдать ей данные. поэтому сначала стартуем сервис django, а за ней node
+  #   depends_on:
+  #     - django
+  #   # Сеть та же, все контейнеры должны крутиться в однйо сети чтобы видеть друг друга.
+  #   networks:
+  #     - myNetwork
+  
+  # Сервис нашей БД
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgresdb
+    env_file:
+      - .env
+    ports:
+      - ${POSTGRES_PORT}:5432
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}" ]
+      interval: 1s
+      timeout: 1s
+      retries: 60
+    restart: always
+    volumes:
+      - postgres_volume:/var/lib/postgresql/data/
+    networks:
+      - myNetwork
+  
+  # nginx:
+  #   build: ./nginx
+  #   container_name: nginx
+  #   networks:
+  #     - myNetwork
+  #   ports:
+  #     - 1337:80
+  #   depends_on:
+  #     - django
+  #   volumes:
+  #     - django_static_volume:/home/src/app/static
+  #     - django_media_volume:/home/src/app/media 
+
+# создаём два volume для статики
+volumes:
+  postgres_volume:
+  django_static_volume:
+  django_media_volume:
+
+# создаём сеть.
+networks:
+  myNetwork:
+    driver: bridge
