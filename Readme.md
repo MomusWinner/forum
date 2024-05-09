@@ -14,7 +14,5 @@ PG_DBNAME=forum_db
 ```
 
 ```
-python manage.py migrate
-
-python.exe .\manage.py createsuperuser
+docker exec -it container_id python manage.py createsuperuser
 ```

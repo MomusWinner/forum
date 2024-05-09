@@ -1,5 +1,5 @@
 version: '3.8'
-# Поднимаем пять сервисов: django, node, rabbitMQ, postgres, nginx
+
 services:
   django:
     build: ./django/django_project/
@@ -22,29 +22,21 @@ services:
     env_file:
       - ./.env
 
-  # node:
-  #   # Аналогично, build из ./reactapp/dockerfile
-  #   build: ./reactapp
-  #   # имя контейнера
-  #   container_name: reactapp
-  #   # рестарт
-  #   restart: always
-  #   # порты
-  #   ports:
-  #     - 3000:3000
-  #   # команда при запуске
-  #   volumes:
-  #     - ./reactapp/public/:/usr/src/app/public/
-  #     - ./reactapp/src/:/usr/src/app/src/
-  #   command: npm start
-  #   # Зависимость. нет смысла ноде, если некому отдать ей данные. поэтому сначала стартуем сервис django, а за ней node
-  #   depends_on:
-  #     - django
-  #   # Сеть та же, все контейнеры должны крутиться в однйо сети чтобы видеть друг друга.
-  #   networks:
-  #     - myNetwork
+  node:
+    build: ./reactapp
+    container_name: reactapp
+    restart: always
+    ports:
+      - 3000:3000
+    volumes:
+      - ./reactapp/public/:/usr/src/app/public/
+      - ./reactapp/src/:/usr/src/app/src/
+    command: npm start
+    depends_on:
+      - django
+    networks:
+      - myNetwork
   
-  # Сервис нашей БД
   postgres:
     image: postgres:15-alpine
     container_name: postgresdb
@@ -76,13 +68,11 @@ services:
   #     - django_static_volume:/home/src/app/static
   #     - django_media_volume:/home/src/app/media 
 
-# создаём два volume для статики
 volumes:
   postgres_volume:
   django_static_volume:
   django_media_volume:
 
-# создаём сеть.
 networks:
   myNetwork:
     driver: bridge
