@@ -4,3 +4,4 @@ python-dotenv==1.0.1
 djangorestframework==3.15.1
 drf-yasg==1.21.7
 setuptools==69.5.1
+djoser==2.2.2

@@ -10,7 +10,7 @@ router = DefaultRouter()
 router.register(r'section', views.SectionViewSet)
 router.register(r'thread', views.ThreadViewSet)
 router.register(r'message', views.MessageViewSet)
-router.register(r'user', views.UserViewSet)
+##router.register(r'user', views.UserViewSet)
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -42,8 +42,9 @@ urlpatterns = [
         schema_view.with_ui('redoc', cache_timeout=0),
         name='schema-redoc'
     ),
-    path('api/', include(router.urls), name='api'),
+    re_path(r'^api/v1/', include('djoser.urls')),
+    re_path(r'^api/v1/', include('djoser.urls.authtoken')),
+    path('api/v1/', include(router.urls), name='api'),
     path('api-auth/', include('rest_framework.urls'), name='rest_framework'),
     path('register/', views.register, name='register'),
-    path('token/', obtain_auth_token),
 ]
