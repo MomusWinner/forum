@@ -28,9 +28,9 @@ services:
     restart: always
     ports:
       - 3000:3000
-    volumes:
-      - ./reactapp/public/:/usr/src/app/public/
-      - ./reactapp/src/:/usr/src/app/src/
+    # volumes:
+    #   - ./reactapp/public/:/usr/src/app/public/
+    #   - ./reactapp/src/:/usr/src/app/src/
     command: npm start
     depends_on:
       - django
