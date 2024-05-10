@@ -29,28 +29,6 @@ def create_viewset(model_class, serializer):
 
     return CustomViewSet
 
-
-def register(request):
-    errors = ''
-    if request.method == 'POST':
-        form = RegistrationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            User.objects.create(user=user)
-        else:
-            errors = form.errors
-    else:
-        form = RegistrationForm()
-
-    return render(
-        request,
-        'registration/register.html',
-        {
-            'form': form,
-            'errors': errors,
-        }
-    )
-
 UserViewSet = create_viewset(User, UserSerializer)
 ThreadViewSet = create_viewset(Thread, ThreadSerializer)
 SectionViewSet = create_viewset(Section, SectionSerializer)

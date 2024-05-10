@@ -46,5 +46,4 @@ urlpatterns = [
     re_path(r'^api/v1/', include('djoser.urls.authtoken')),
     path('api/v1/', include(router.urls), name='api'),
     path('api-auth/', include('rest_framework.urls'), name='rest_framework'),
-    path('register/', views.register, name='register'),
 ]
