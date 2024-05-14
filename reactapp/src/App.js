@@ -3,6 +3,7 @@ import { Routes, Route, Link } from "react-router-dom"
 import {Registration} from "./components/Registartion.jsx"
 import { Login } from './components/Login.jsx';
 import { Home } from './components/Home.jsx';
+import 'bootstrap/dist/css/bootstrap.css';
 
 function App() {
   return (
