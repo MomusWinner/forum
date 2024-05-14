@@ -39,7 +39,7 @@ export function Registration() {
     <Form onSubmit={submitDataAdd}>
         <FormGroup row>
           <Label
-            for="exampleUsername"
+            for="username"
             sm={2}
           >
             Username
@@ -47,9 +47,8 @@ export function Registration() {
           <Col sm={10}>
             <Input
               invalid={validUser["username"]}
-              id="exampleUsername"
+              id="username"
               name="username"
-              placeholder="with a placeholder"
               type="name"
               onChange={onChange}
             />
@@ -60,7 +59,7 @@ export function Registration() {
         </FormGroup>
         <FormGroup row>
           <Label
-            for="exampleEmail"
+            for="email"
             sm={2}
           >
             Email
@@ -68,9 +67,8 @@ export function Registration() {
           <Col sm={10}>
             <Input
               invalid={validUser["email"]}
-              id="exampleEmail"
+              id="email"
               name="email"
-              placeholder="with a placeholder"
               type="email"
               onChange={onChange}
             />
@@ -81,7 +79,7 @@ export function Registration() {
         </FormGroup>
         <FormGroup row>
           <Label
-            for="examplePassword"
+            for="password"
             sm={2}
           >
             Password
@@ -89,9 +87,8 @@ export function Registration() {
           <Col sm={10}>
             <Input
               invalid={validUser["password"]}
-              id="examplePassword"
+              id="password"
               name="password"
-              placeholder="password placeholder"
               type="password"
               onChange={onChange}
             />
@@ -100,13 +97,9 @@ export function Registration() {
             </FormFeedback>
           </Col>
         </FormGroup>
-        <FormGroup
-          check
-          row
-        >
+        <FormGroup check row>
           <Col
             sm={{
-              offset: 2,
               size: 10
             }}
           >
