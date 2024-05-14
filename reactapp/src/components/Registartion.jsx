@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 
 export function Registration() {
     const [user, setUser] = useState({})
+    const [validUser, setValidUser] = useState({})
+
     const navigate = useNavigate();
 
     const onChange = (e) => {
@@ -26,7 +28,11 @@ export function Registration() {
           .then(() => {
             navigate("/login")
           })
-          .catch((e) => console.log(e.data))
+          .catch((e) => {
+            console.log(e.response.data["username"])
+            console.log(e.response.data)
+            setValidUser(e.response.data)
+          })
     }
   
     return (
@@ -40,16 +46,17 @@ export function Registration() {
           </Label>
           <Col sm={10}>
             <Input
+              invalid={validUser["username"]}
               id="exampleUsername"
               name="username"
               placeholder="with a placeholder"
               type="name"
               onChange={onChange}
             />
+            <FormFeedback invalid>
+              {validUser["username"]}
+            </FormFeedback>
           </Col>
-          <FormFeedback>
-            You will not be able to see this
-          </FormFeedback>
         </FormGroup>
         <FormGroup row>
           <Label
@@ -60,12 +67,16 @@ export function Registration() {
           </Label>
           <Col sm={10}>
             <Input
+              invalid={validUser["email"]}
               id="exampleEmail"
               name="email"
               placeholder="with a placeholder"
               type="email"
               onChange={onChange}
             />
+            <FormFeedback invalid>
+              {validUser["email"]}
+            </FormFeedback>
           </Col>
         </FormGroup>
         <FormGroup row>
@@ -77,12 +88,16 @@ export function Registration() {
           </Label>
           <Col sm={10}>
             <Input
+              invalid={validUser["password"]}
               id="examplePassword"
               name="password"
               placeholder="password placeholder"
               type="password"
               onChange={onChange}
             />
+            <FormFeedback invalid>
+              {validUser["password"]}
+            </FormFeedback>
           </Col>
         </FormGroup>
         <FormGroup
