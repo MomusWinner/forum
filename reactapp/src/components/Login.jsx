@@ -7,6 +7,7 @@ import { API_LOGIN }  from "../api-path.js"
 
 export function Login() {
     const [user, setUser] = useState({})
+    const [validLogin, setValidLogin] = useState()
     const navigate = useNavigate();
 
     const onChange = (e) => {
@@ -21,19 +22,21 @@ export function Login() {
           username: user["username"],
           password: user["password"]
       }
-      console.log(API_LOGIN)
   
-    
       const result = await axios.post(API_LOGIN, data, {headers: {'Content-Type': 'multipart/form-data'}})
-          .then(() => {
-            localStorage.setItem('token', data["auth_token"])
+          .then((resp) => {
+            console.log( resp["auth_token"])
+            localStorage.setItem('token', resp["auth_token"])
             localStorage.getItem('token')
+            setValidLogin(undefined)
             navigate("/")
           })
-          .catch((e) => console.log('[Error] ' + e.data))
+          .catch((e) => setValidLogin("Name or password is incorrect."))
     }
   
     return (
+    <>
+    <p hidden={!validLogin}>{validLogin}</p>
     <Form onSubmit={submitDataAdd}>
         <FormGroup row>
           <Label
@@ -88,5 +91,6 @@ export function Login() {
           </Col>
         </FormGroup>
     </Form>
+    </>
     );
   }
