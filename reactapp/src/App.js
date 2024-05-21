@@ -6,6 +6,7 @@ import { Routes, Route, Link } from "react-router-dom"
 import { Registration } from "./components/Registartion.jsx"
 import { Login } from './components/Login.jsx';
 import { Home } from './components/Home.jsx';
+import { Forum } from './components/Forum/Forum.jsx';
 
 function App() {
   return (
@@ -13,6 +14,9 @@ function App() {
         <Navbar>
           <NavbarBrand href="/">
             Home
+          </NavbarBrand>
+          <NavbarBrand href="/forum">
+            Forum
           </NavbarBrand>
           <NavbarBrand href="/registration">
             Reagistration
@@ -26,6 +30,7 @@ function App() {
          <Route path="/" element={<Home />} />
           <Route path="/registration" element={<Registration />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/forum" element={<Forum />} />
         </Routes>
       </div>
   );
