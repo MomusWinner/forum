@@ -2,7 +2,7 @@ import { Form, FormGroup, Label, Col, Input, FormFeedback, Button } from "reacts
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { API_LOGIN }  from "../api-path.js"
+import { API_LOGIN, HOST }  from "../api-path.js"
 
 
 export function Login() {
@@ -23,11 +23,10 @@ export function Login() {
           password: user["password"]
       }
   
-      const result = await axios.post(API_LOGIN, data, {headers: {'Content-Type': 'multipart/form-data'}})
+      const result = await axios.post(HOST + API_LOGIN, data, {headers: {'Content-Type': 'multipart/form-data'}})
           .then((resp) => {
-            console.log( resp["auth_token"])
-            localStorage.setItem('token', resp["auth_token"])
-            localStorage.getItem('token')
+            console.log(resp.data["auth_token"])
+            localStorage.setItem('token', resp.data["auth_token"])
             setValidLogin(undefined)
             navigate("/")
           })
