@@ -20,7 +20,7 @@ RUN pip install -r requirements.txt
 
 # копируем всё что осталось.
 
-# COPY --chmod=0755 *.sh /usr/src/app/
+COPY --chmod=0755 *.sh /usr/src/app/
 COPY . .
 
 ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
