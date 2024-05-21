@@ -10,6 +10,7 @@ router = DefaultRouter()
 router.register(r'section', views.SectionViewSet)
 router.register(r'thread', views.ThreadViewSet)
 router.register(r'message', views.MessageViewSet)
+router.register(r'user', views.UserViewSet)
 ##router.register(r'user', views.UserViewSet)
 
 schema_view = get_schema_view(
