@@ -1,9 +1,9 @@
 #!/bin/bash
-export PG_HOST=postgres
-export PG_PORT=5432
-export PG_USER=test
-export PG_PASSWORD=test
-export PG_DBNAME=test
+export POSTGRES_HOST=127.0.0.1
+export POSTGRES_PORT=5432
+export POSTGRES_USER=test
+export POSTGRES_PASSWORD=test
+export POSTGRES_DB=test
 # export MINIO_ACCESS_KEY_ID=user
 # export MINIO_SECRET_ACCESS_KEY=password
 # export MINIO_STORAGE_BUCKET_NAME=static
