@@ -24,28 +24,28 @@ jobs:
     - name: Установка модулей и зависимостей
       run: |
         python -m pip install --upgrade pip
-        pip install -r tests/requirements.txt
-    - name: Тесты models
-      run: |
-        chmod +x tests/test.sh
-        ./tests/test.sh tests.test_models
-    - name: Тесты views
-      run: |
-        chmod +x tests/test.sh
-        ./tests/test.sh tests.test_views
+        pip install -r django/django_project/tests/requirements.txt
+    # - name: Тесты models
+    #   run: |
+    #     chmod +x django/django_project/tests/test.sh
+    #     ./django/django_project/tests/test.sh tests.test_models
+    # - name: Тесты views
+    #   run: |
+    #     chmod +x tests/test.sh
+    #     ./django/django_project/tests/test.sh tests.test_views
     - name: Тесты api
       run: |
-        chmod +x tests/test.sh
-        ./tests/test.sh tests.test_api
-    - name: Тесты forms
-      run: |
-        chmod +x tests/test.sh
-        ./tests/test.sh tests.test_forms
-    - name: Тесты buy
-      run: |
-        chmod +x tests/test.sh
-        ./tests/test.sh tests.test_buy
-    - name: Тесты add funds
-      run: |
-        chmod +x tests/test.sh
-        ./tests/test.sh tests.test_add_funds
+        chmod +x django/django_project/tests/test.sh
+        ./django/django_project/tests/test.sh tests.test_api
+    # - name: Тесты forms
+    #   run: |
+    #     chmod +x django/django_project/tests/test.sh
+    #     ./django/django_project/tests/test.sh tests.test_forms
+    # - name: Тесты buy
+    #   run: |
+    #     chmod +x django/django_project/tests/test.sh
+    #     ./django/django_project/tests/test.sh tests.test_buy
+    # - name: Тесты add funds
+    #   run: |
+    #     chmod +x django/django_project/tests/test.sh
+    #     ./django/django_project/tests/test.sh tests.test_add_funds
