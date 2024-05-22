@@ -36,7 +36,7 @@ jobs:
     - name: Тесты api
       run: |
         chmod +x django/django_project/tests/test.sh
-        ./django/django_project/tests/test.sh tests.test_api
+        ./django/django_project/tests/test.sh django.django_project.test_api
     # - name: Тесты forms
     #   run: |
     #     chmod +x django/django_project/tests/test.sh
