@@ -1,14 +1,23 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
-
 import { Navbar, NavbarBrand } from 'reactstrap';
-import { Routes, Route, Link } from "react-router-dom"
+import { Routes, Route } from "react-router-dom"
 import { Registration } from "./components/Registartion.jsx"
 import { Login } from './components/Login.jsx';
 import { Home } from './components/Home.jsx';
 import { Forum } from './components/Forum/Forum.jsx';
+import { Thread } from './components/Thread/Thread.jsx';
+import { useNavigate } from "react-router-dom";
 
 function App() {
+  const navigate = useNavigate();
+
+  function handleLogout()
+  {
+    localStorage.setItem('token', "")
+    navigate("/login")
+  }
+
   return (
       <div>
         <Navbar>
@@ -24,6 +33,9 @@ function App() {
           <NavbarBrand href="/login">
             login
           </NavbarBrand>
+          <NavbarBrand onClick={handleLogout}>
+            logout
+          </NavbarBrand>
         </Navbar>
 
         <Routes>
@@ -31,6 +43,7 @@ function App() {
           <Route path="/registration" element={<Registration />} />
           <Route path="/login" element={<Login />} />
           <Route path="/forum" element={<Forum />} />
+          <Route path="/thread" element={<Thread/>} />
         </Routes>
       </div>
   );

@@ -55,7 +55,7 @@ class User(UUIDMixin, AbstractUser):
 class Thread(UUIDMixin, CreatedMixin):
     title = models.TextField('title', null=False, blank=False, max_length=TITLE_MAX_LEN)
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
-
+    sections = models.ManyToManyField("Section", verbose_name='sections', through='SectionThread')
     def __str__(self) -> str:
         return self.title
 
@@ -68,7 +68,7 @@ class Thread(UUIDMixin, CreatedMixin):
 
 class Section(UUIDMixin):
     name = models.TextField('name', null=False, blank=False, max_length=NAME_MAX_LENGTH)
-    threads = models.ManyToManyField(Thread, verbose_name='thread', through='SectionThread')
+    threads = models.ManyToManyField(Thread, verbose_name='threads', through='SectionThread')
 
     def __str__(self) -> str:
         return self.name

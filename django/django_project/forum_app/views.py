@@ -2,9 +2,11 @@ from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import BasePermission
 from rest_framework.authentication import TokenAuthentication
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from .forms import RegistrationForm
-from .serializers import UserSerializer, ThreadSerializer, SectionSerializer, MessageSerializer
+from .serializers import UserSerializerDAB, ThreadSerializer, SectionSerializer, MessageSerializer
 from .models import User, Thread, Section, Message
 
 
@@ -29,7 +31,42 @@ def create_viewset(model_class, serializer):
 
     return CustomViewSet
 
-UserViewSet = create_viewset(User, UserSerializer)
-ThreadViewSet = create_viewset(Thread, ThreadSerializer)
+
+class ThreadViewSet(ModelViewSet):
+    serializer_class = ThreadSerializer
+    queryset = Thread.objects.all()
+    permission_classes = [MyPermission]
+    authentication_classes = [TokenAuthentication]
+
+    def list(self, request, pk=None):
+        if pk != None:
+            threads =  Thread.objects.get(id=pk)
+        else:
+            sectionId = request.query_params.get('sectionId')
+            if sectionId:
+                threads = list(Section.objects.filter(id=sectionId))[0].threads
+            else:
+                threads = Thread.objects.all()
+
+
+        serializer = self.get_serializer(threads, many=True)
+        result_set = serializer.data
+
+        return Response(result_set)
+    # @action(detail=True, methods=['get'])
+    # def set_password(self, request, pk=None):
+    #     user = self.get_object()
+    #     print(request.query)
+    #     serializer = PasswordSerializer(data=request.data)
+    #     if serializer.is_valid():
+    #         user.set_password(serializer.validated_data['password'])
+    #         user.save()
+    #         return Response({'status': 'password set'})
+    #     else:
+    #         return Response(serializer.errors,
+    #                         status=status.HTTP_400_BAD_REQUEST)
+
+UserViewSet = create_viewset(User, UserSerializerDAB)
+# ThreadViewSet = create_viewset(Thread, ThreadSerializer)
 SectionViewSet = create_viewset(Section, SectionSerializer)
 MessageViewSet = create_viewset(Message, MessageSerializer)

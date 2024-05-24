@@ -9,34 +9,23 @@ export function ListThreads({token, sectionId})
     const [threads, setThreads] = useState()
 
     useEffect(()=>{
-        if(sectionId === null) sectionId = ""
-        else sectionId += "/"
-        console.log(sectionId)
+        if(!token) return
+        if(sectionId === null || sectionId === undefined) sectionId = ""
+        else sectionId = "?sectionId=" + sectionId
         const result = axios.get(HOST + THREAD + sectionId, { headers: { "Authorization": 'Token ' + token } })
         .then((resp) => {
             setThreads(resp.data);
         })
         .catch((e) => console.log(e));
-    }, [])
+    }, [sectionId, token])
 
     return(
-        // <>
-        //     {sections ?
-        //         <ListGroup>
-        //             {sections.map(section => (
-        //                 <ListGroupItem>{section.name}</ListGroupItem>
-        //             ))}
-        //         </ListGroup>
-        //         :
-        //         <Spinner>
-        //         Loading...
-        //         </Spinner>}
-        // </>
         <div className="thead-table">
         <Table >
             <thead>
             <tr>
                 <th>Title</th>
+                <th>User</th>
             </tr>
             </thead>
             <tbody>
@@ -47,8 +36,9 @@ export function ListThreads({token, sectionId})
                     </td>
                 </tr>
             ) : threads.map(thread => (
-                    <tr key={thread.url}>
+                    <tr key={thread.id}>
                         <td>{thread.title}</td>
+                        <td>{thread.user_id}</td>
                     </tr>
                 )
             )}

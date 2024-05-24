@@ -46,13 +46,13 @@ export function Registration() {
           </Label>
           <Col sm={10}>
             <Input
-              invalid={validUser["username"]}
+              invalid={validUser["username"] !== undefined}
               id="username"
               name="username"
               type="name"
               onChange={onChange}
             />
-            <FormFeedback invalid>
+            <FormFeedback>
               {validUser["username"]}
             </FormFeedback>
           </Col>
@@ -66,13 +66,13 @@ export function Registration() {
           </Label>
           <Col sm={10}>
             <Input
-              invalid={validUser["email"]}
+              invalid={validUser["email"] !== undefined}
               id="email"
               name="email"
               type="email"
               onChange={onChange}
             />
-            <FormFeedback invalid>
+            <FormFeedback>
               {validUser["email"]}
             </FormFeedback>
           </Col>
@@ -86,13 +86,13 @@ export function Registration() {
           </Label>
           <Col sm={10}>
             <Input
-              invalid={validUser["password"]}
+              invalid={validUser["password"] !== undefined}
               id="password"
               name="password"
               type="password"
               onChange={onChange}
             />
-            <FormFeedback invalid>
+            <FormFeedback>
               {validUser["password"]}
             </FormFeedback>
           </Col>
