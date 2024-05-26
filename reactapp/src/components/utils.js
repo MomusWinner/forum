@@ -1,9 +1,8 @@
-export function getToken(setToken, navigate)
+export function getToken(navigate)
 {
     let newToken = localStorage.getItem('token')
     console.log(typeof(newToken) + newToken)
     if(newToken)  
-        setToken(newToken)
-    else
-        navigate('/login')
+        return newToken
+    navigate('/login')
 }
