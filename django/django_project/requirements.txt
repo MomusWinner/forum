@@ -6,3 +6,4 @@ drf-yasg==1.21.7
 setuptools==69.5.1
 djoser==2.2.2
 django-cors-headers==4.3.1
+django-ckeditor-5==0.2.13
