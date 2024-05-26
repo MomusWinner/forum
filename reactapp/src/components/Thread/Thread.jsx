@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { getToken } from "../utils"
 import { ListMessages } from "../ListMessages/ListMessages";
 import { HOST, THREAD } from "../../api-path";
+import { Spinner } from "reactstrap";
 
 export function Thread()
 {
@@ -26,8 +27,14 @@ export function Thread()
 
     return(
         <div>
+        {thread?
+        <>
         <h1>{thread ? thread.title : ""}</h1>
-        <ListMessages token={getToken(navigate)} threadId={threadId}/>
+        <ListMessages token={getToken(navigate)} messages={thread.messages}/>
+        </>
+        :
+        <Spinner/>
+        }
         </div>
     )
 }

@@ -53,20 +53,8 @@ class ThreadViewSet(ModelViewSet):
         result_set = serializer.data
 
         return Response(result_set)
-    # @action(detail=True, methods=['get'])
-    # def set_password(self, request, pk=None):
-    #     user = self.get_object()
-    #     print(request.query)
-    #     serializer = PasswordSerializer(data=request.data)
-    #     if serializer.is_valid():
-    #         user.set_password(serializer.validated_data['password'])
-    #         user.save()
-    #         return Response({'status': 'password set'})
-    #     else:
-    #         return Response(serializer.errors,
-    #                         status=status.HTTP_400_BAD_REQUEST)
+
 
 UserViewSet = create_viewset(User, UserSerializerDAB)
-# ThreadViewSet = create_viewset(Thread, ThreadSerializer)
 SectionViewSet = create_viewset(Section, SectionSerializer)
 MessageViewSet = create_viewset(Message, MessageSerializer)

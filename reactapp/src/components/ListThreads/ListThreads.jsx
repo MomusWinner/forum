@@ -4,23 +4,11 @@ import { useEffect, useState } from "react";
 import { Spinner, Table } from "reactstrap";
 import "./ListThreads.css"
 
-export function ListThreads({token, sectionId})
+export function ListThreads({threads})
 {
-    const [threads, setThreads] = useState()
-
-    useEffect(()=>{
-        if(!token) return
-        if(sectionId === null || sectionId === undefined) sectionId = ""
-        else sectionId = "?sectionId=" + sectionId
-        const result = axios.get(HOST + THREAD + sectionId, { headers: { "Authorization": 'Token ' + token } })
-        .then((resp) => {
-            setThreads(resp.data);
-        })
-        .catch((e) => console.log(e));
-    }, [sectionId, token])
 
     return(
-        <div className="thead-table">
+        <div>
         <Table >
             <thead>
             <tr>

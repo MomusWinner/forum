@@ -2,26 +2,13 @@ import axios from "axios";
 import { MESSAGE } from "../../api-path";
 import { HOST, THREAD } from "../../api-path";
 import { useEffect, useState } from "react";
-import { Spinner, Table } from "reactstrap";
-
+import { Table } from "reactstrap";
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import parse from 'html-react-parser';
 
-
-export function ListMessages({token, threadId})
+export function ListMessages({token, messages})
 {
-    const [messages, setMessages] = useState()
-
-    useEffect(()=>{
-        if(!token) return
-        // if(sectionId === null || sectionId === undefined) sectionId = ""
-        // else sectionId = "?sectionId=" + sectionId
-        const result = axios.get(HOST + MESSAGE, { headers: { "Authorization": 'Token ' + token } })
-        .then((resp) => {
-            setMessages(resp.data);
-        })
-        .catch((e) => console.log(e));
-    }, [threadId, token])
 
     return(
         <>
@@ -29,7 +16,7 @@ export function ListMessages({token, threadId})
             <thead>
             <tr>
                 <th>User</th>
-                <th>Message</th>
+                <th style={{width: "70%"}}>Message</th>
             </tr>
             </thead>
             <tbody>
@@ -43,23 +30,25 @@ export function ListMessages({token, threadId})
                     <tr key={message.id}>
                         <td>{message.user_id}</td>
                         <td>{
-                                    <CKEditor
-                                    editor={ ClassicEditor }
-                                    data={message.message_body}
-                                    onReady={ editor => {
-                                        // You can store the "editor" and use when it is needed.
-                                        console.log( 'Editor is ready to use!', editor );
-                                    } }
-                                    onChange={ ( event ) => {
-                                        console.log( event );
-                                    } }
-                                    onBlur={ ( event, editor ) => {
-                                        console.log( 'Blur.', editor );
-                                    } }
-                                    onFocus={ ( event, editor ) => {
-                                        console.log( 'Focus.', editor );
-                                    } }
-                                    />
+                                parse(message.message_body)
+                                // <CKEditor
+                                //     editor={ ClassicEditor }
+                                //     data={message.message_body}
+                                //     disableWatchdog={true}
+                                //     onReady={ editor => {
+                                //         // You can store the "editor" and use when it is needed.
+                                //         console.log( 'Editor is ready to use!', editor );
+                                //     } }
+                                //     onChange={ ( event ) => {
+                                //         console.log( event );
+                                //     } }
+                                //     onBlur={ ( event, editor ) => {
+                                //         console.log( 'Blur.', editor );
+                                //     } }
+                                //     onFocus={ ( event, editor ) => {
+                                //         console.log( 'Focus.', editor );
+                                //     } }
+                                //     />
                         }</td>
                     </tr>
                 )
