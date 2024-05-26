@@ -8,6 +8,7 @@ import { Home } from './components/Home.jsx';
 import { Forum } from './components/Forum/Forum.jsx';
 import { Thread } from './components/Thread/Thread.jsx';
 import { useNavigate } from "react-router-dom";
+import { Profile } from './components/Profile/Profile.jsx';
 
 function App() {
   const navigate = useNavigate();
@@ -39,11 +40,12 @@ function App() {
         </Navbar>
 
         <Routes>
-         <Route path="/" element={<Home />} />
-          <Route path="/registration" element={<Registration />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/forum" element={<Forum />} />
+         <Route path="/" element={<Home/>} />
+          <Route path="/registration" element={<Registration/>} />
+          <Route path="/login" element={<Login/>} />
+          <Route path="/forum" element={<Forum/>} />
           <Route path="/thread" element={<Thread/>} />
+          <Route path="/profile" element={<Profile/>}/>
         </Routes>
       </div>
   );
