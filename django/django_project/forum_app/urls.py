@@ -43,6 +43,7 @@ urlpatterns = [
         schema_view.with_ui('redoc', cache_timeout=0),
         name='schema-redoc'
     ),
+    path('ckeditor5/', include('django_ckeditor_5.urls')),
     re_path(r'^api/v1/', include('djoser.urls')),
     re_path(r'^api/v1/', include('djoser.urls.authtoken')),
     path('api/v1/', include(router.urls), name='api'),
