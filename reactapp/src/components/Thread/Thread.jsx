@@ -1,22 +1,33 @@
+import axios from "axios";
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
-import { Sections } from "../Sections/Sections";
 import { getToken } from "../utils"
+import { ListMessages } from "../ListMessages/ListMessages";
+import { HOST, THREAD } from "../../api-path";
 
 export function Thread()
 {
-    const [token, setToken] = useState()
+    const queryParams = new URLSearchParams(window.location.search)
+    const threadId = queryParams.get("threadId")
+    const [thread, setThread] = useState()
     const navigate = useNavigate();
 
     useEffect(()=>
     {
-        getToken(setToken, navigate)
+        let token = getToken(navigate)
+
+        const result = axios.get(HOST + THREAD + threadId + "/", { headers: { "Authorization": 'Token ' + token } })
+        .then((resp) => {
+            setThread(resp.data);
+            console.log(resp.data)
+        })
+        .catch((e) => console.log(e));
     }, [])
 
     return(
-        <div className="layout">
-            <Sections token={token}/>
-            {/* <ListThreads token={token} sectionId={sectionId}/> */}
+        <div>
+        <h1>{thread ? thread.title : ""}</h1>
+        <ListMessages token={getToken(navigate)} threadId={threadId}/>
         </div>
     )
 }
