@@ -37,8 +37,8 @@ export function ListThreads({token, sectionId})
                 </tr>
             ) : threads.map(thread => (
                     <tr key={thread.id}>
-                        <td>{thread.title}</td>
-                        <td>{thread.user_id}</td>
+                        <td><a href={"/thread?threadId=" + thread.id}>{thread.title}</a></td>
+                        <td><a href={"/profile?userId=" + thread.user_id}>{thread.user_id}</a></td>
                     </tr>
                 )
             )}
