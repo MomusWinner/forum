@@ -5,6 +5,7 @@ from datetime import datetime, date, timezone
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractUser
+from django_ckeditor_5.fields import CKEditor5Field
 
 NAME_MAX_LENGTH = 100
 TITLE_MAX_LEN = 100
@@ -97,7 +98,7 @@ class SectionThread(UUIDMixin):
 
 
 class Message(UUIDMixin, CreatedMixin):
-    message_body = models.TextField('message_body')
+    message_body = CKEditor5Field('message_body', max_length=500, config_name='extends')
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 
