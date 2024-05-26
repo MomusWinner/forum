@@ -7,18 +7,12 @@ import "./Forum.css";
 
 export function Forum()
 {
-    const [token, setToken] = useState()
     const [sectionId, setSectionId] = useState()
     const navigate = useNavigate();
 
-    useEffect(()=>
-    {
-        getToken(setToken, navigate)
-    }, [])
-
     return(
         <div className="layout">
-            <Sections token={token} onChangeSection={setSectionId}/>
-            <ListThreads token={token} sectionId={sectionId}/></div>
+            <Sections token={getToken(navigate)} onChangeSection={setSectionId}/>
+            <ListThreads token={getToken(navigate)} sectionId={sectionId}/></div>
     )
 }
