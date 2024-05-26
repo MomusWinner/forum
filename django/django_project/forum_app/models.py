@@ -57,6 +57,7 @@ class Thread(UUIDMixin, CreatedMixin):
     title = models.TextField('title', null=False, blank=False, max_length=TITLE_MAX_LEN)
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     sections = models.ManyToManyField("Section", verbose_name='sections', through='SectionThread')
+
     def __str__(self) -> str:
         return self.title
 
@@ -98,7 +99,7 @@ class SectionThread(UUIDMixin):
 
 
 class Message(UUIDMixin, CreatedMixin):
-    message_body = CKEditor5Field('message_body', max_length=500, config_name='extends')
+    message_body = CKEditor5Field('message_body', max_length=2000, config_name='extends')
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 
