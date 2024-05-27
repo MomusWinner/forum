@@ -4,15 +4,13 @@ from rest_framework.permissions import BasePermission
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import action
 from rest_framework.response import Response
-
-from .forms import RegistrationForm
 from .serializers import UserSerializerDAB, ThreadSerializer, SectionSerializer, MessageSerializer
 from .models import User, Thread, Section, Message
 
 
 class MyPermission(BasePermission): #TODO Change permission
-    _safe_methods = 'GET', 'HEAD', 'OPTIONS', 'PATCH'
-    _unsafe_methods = 'POST', 'PUT', 'DELETE'
+    _safe_methods = 'GET', 'HEAD', 'OPTIONS', 'PATCH', 'POST', 'PUT',
+    _unsafe_methods = 'DELETE'
 
     def has_permission(self, request, _):
         if request.method in self._safe_methods and (request.user and request.user.is_authenticated):
