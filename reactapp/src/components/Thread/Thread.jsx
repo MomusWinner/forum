@@ -5,6 +5,7 @@ import { getToken } from "../utils"
 import { ListMessages } from "../ListMessages/ListMessages";
 import { HOST, THREAD } from "../../api-path";
 import { Spinner } from "reactstrap";
+import { CreateMessageModal } from "../CreateMessageModal/CreateMessageModal";
 
 export function Thread()
 {
@@ -15,21 +16,26 @@ export function Thread()
 
     useEffect(()=>
     {
-        let token = getToken(navigate)
+        getMessages()
+    }, [])
 
+    function getMessages()
+    {
+        let token = getToken(navigate)
         const result = axios.get(HOST + THREAD + threadId + "/", { headers: { "Authorization": 'Token ' + token } })
         .then((resp) => {
             setThread(resp.data);
             console.log(resp.data)
         })
         .catch((e) => console.log(e));
-    }, [])
+    }
 
     return(
         <div>
         {thread?
         <>
         <h1>{thread ? thread.title : ""}</h1>
+        <CreateMessageModal threadId={threadId} onCreate={getMessages}/>
         <ListMessages token={getToken(navigate)} messages={thread.messages}/>
         </>
         :
