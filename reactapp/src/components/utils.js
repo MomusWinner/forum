@@ -6,3 +6,13 @@ export function getToken(navigate)
         return newToken
     navigate('/login')
 }
+
+export function formatDate(string){
+    var options = {
+        year: 'numeric', 
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric' };
+    return new Date(string).toLocaleDateString([],options);
+}
