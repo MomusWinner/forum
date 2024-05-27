@@ -1,7 +1,9 @@
 import { Table } from "reactstrap";
 import parse from 'html-react-parser';
+import { User } from "../User/User";
+import { formatDate } from "../utils";
 
-export function ListMessages({token, messages})
+export function ListMessages({messages})
 {
     return(
         <>
@@ -10,6 +12,7 @@ export function ListMessages({token, messages})
             <tr>
                 <th>User</th>
                 <th style={{width: "70%"}}>Message</th>
+                <th>Created</th>
             </tr>
             </thead>
             <tbody>
@@ -21,10 +24,9 @@ export function ListMessages({token, messages})
                 </tr>
             ) : messages.map(message => (
                     <tr key={message.id}>
-                        <td>{message.user}</td>
-                        <td>{
-                                parse(message.message_body)
-                        }</td>
+                        <td>{<User userId={message.user}/>}</td>
+                        <td>{parse(message.message_body)}</td>
+                        <td>{formatDate(message.created)}</td>
                     </tr>
                 )
             )}

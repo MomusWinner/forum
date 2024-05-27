@@ -1,12 +1,10 @@
-import axios from "axios";
-import { HOST, THREAD } from "../../api-path";
-import { useEffect, useState } from "react";
 import { Spinner, Table } from "reactstrap";
 import "./ListThreads.css"
+import { User } from "../User/User";
+import { formatDate } from "../utils";
 
 export function ListThreads({threads})
 {
-
     return(
         <div>
         <Table >
@@ -14,6 +12,7 @@ export function ListThreads({threads})
             <tr>
                 <th>Title</th>
                 <th>User</th>
+                <th>Created</th>
             </tr>
             </thead>
             <tbody>
@@ -26,7 +25,8 @@ export function ListThreads({threads})
             ) : threads.map(thread => (
                     <tr key={thread.id}>
                         <td><a href={"/thread?threadId=" + thread.id}>{thread.title}</a></td>
-                        <td><a href={"/profile?userId=" + thread.user_id}>{thread.user_id}</a></td>
+                        <td><User userId={thread.user_id}/></td>
+                        <td>{formatDate(thread.created)}</td>
                     </tr>
                 )
             )}
