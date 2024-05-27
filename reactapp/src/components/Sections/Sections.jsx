@@ -12,6 +12,8 @@ export function Sections({ token, onChangeSection }) {
         if(!token) return
         const result = axios.get(HOST + SECTION, { headers: { "Authorization": 'Token ' + token } })
             .then((resp) => {
+                console.log(resp.data)
+                resp.data.push({id: "", name: "all"})
                 setSections(resp.data);
             })
             .catch((e) => setError(true));
