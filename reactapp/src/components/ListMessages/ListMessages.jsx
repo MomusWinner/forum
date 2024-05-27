@@ -1,15 +1,8 @@
-import axios from "axios";
-import { MESSAGE } from "../../api-path";
-import { HOST, THREAD } from "../../api-path";
-import { useEffect, useState } from "react";
 import { Table } from "reactstrap";
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import parse from 'html-react-parser';
 
 export function ListMessages({token, messages})
 {
-
     return(
         <>
         <Table >
@@ -28,27 +21,9 @@ export function ListMessages({token, messages})
                 </tr>
             ) : messages.map(message => (
                     <tr key={message.id}>
-                        <td>{message.user_id}</td>
+                        <td>{message.user}</td>
                         <td>{
                                 parse(message.message_body)
-                                // <CKEditor
-                                //     editor={ ClassicEditor }
-                                //     data={message.message_body}
-                                //     disableWatchdog={true}
-                                //     onReady={ editor => {
-                                //         // You can store the "editor" and use when it is needed.
-                                //         console.log( 'Editor is ready to use!', editor );
-                                //     } }
-                                //     onChange={ ( event ) => {
-                                //         console.log( event );
-                                //     } }
-                                //     onBlur={ ( event, editor ) => {
-                                //         console.log( 'Blur.', editor );
-                                //     } }
-                                //     onFocus={ ( event, editor ) => {
-                                //         console.log( 'Focus.', editor );
-                                //     } }
-                                //     />
                         }</td>
                     </tr>
                 )
