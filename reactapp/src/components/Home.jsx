@@ -3,7 +3,8 @@ export function Home()
 
     return(
         <>
-        <p>Hello</p>
+        <h1>Simple forum</h1>
+        <p>Share data with people around you!</p>
         </>
     )
 }
