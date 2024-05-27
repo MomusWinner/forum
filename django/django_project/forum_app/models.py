@@ -69,7 +69,7 @@ class Thread(UUIDMixin, CreatedMixin):
 
 
 class Section(UUIDMixin):
-    name = models.TextField('name', null=False, blank=False, max_length=NAME_MAX_LENGTH)
+    name = models.TextField('name', null=False, blank=False, unique=True, max_length=NAME_MAX_LENGTH)
     threads = models.ManyToManyField(Thread, verbose_name='threads', through='SectionThread')
 
     def __str__(self) -> str:
@@ -83,8 +83,8 @@ class Section(UUIDMixin):
 
 
 class SectionThread(UUIDMixin):
-    section = models.ForeignKey(Section, verbose_name='section', on_delete=models.CASCADE)
-    thread = models.ForeignKey(Thread, verbose_name='thraed', on_delete=models.CASCADE)
+    section = models.ForeignKey(Section, null=True, blank=True, verbose_name='section', on_delete=models.CASCADE)
+    thread = models.ForeignKey(Thread, null=True, blank=True, verbose_name='thraed', on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return f'{self.section}: {self.thread}'
@@ -99,10 +99,9 @@ class SectionThread(UUIDMixin):
 
 
 class Message(UUIDMixin, CreatedMixin):
-    message_body = CKEditor5Field('message_body', max_length=2000, config_name='extends')
+    message_body = CKEditor5Field('message_body', null=False, blank=False, max_length=2000, config_name='extends')
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
-
 
     def __str__(self) -> str:
         return f'{self.message_body}'
