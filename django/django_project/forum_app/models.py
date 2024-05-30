@@ -1,7 +1,6 @@
-from typing import Any
 from django.db import models
 from uuid import uuid4
-from datetime import datetime, date, timezone
+from datetime import datetime, timezone
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractUser
@@ -10,7 +9,7 @@ from django_ckeditor_5.fields import CKEditor5Field
 NAME_MAX_LENGTH = 100
 TITLE_MAX_LEN = 100
 DESCRIPTION_MAX_LEN = 1000
-PASSWORD_MAX_LEN = 100 
+PASSWORD_MAX_LEN = 100
 MAIL_MAX_LEN = 100
 
 

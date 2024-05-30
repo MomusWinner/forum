@@ -9,6 +9,7 @@ def prepare_db(self):
     self.connect()
     self.connection.cursor().execute('CREATE SCHEMA IF NOT EXISTS forum;')
 
+
 class PostgresSchemaRunner(DiscoverRunner):
     def setup_databases(self, **kwargs: Any) -> list[tuple[BaseDatabaseWrapper, str, bool]]:
         for conn_name in connections:
