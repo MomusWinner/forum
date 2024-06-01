@@ -42,7 +42,8 @@ export function CreateThreadModal({onCreate})
     function createThread(){
         let token = getToken(navigate)
         let sectionsId = []
-        sections.forEach((section)=>sectionsId.push(section.value))
+        if(sections)
+            sections.forEach((section)=>sectionsId.push(section.value))
         axios.post(HOST+THREAD, {title: title, sections: sectionsId}, {headers: { "Authorization": 'Token ' + token } })
         .then((resp)=>{
             onCreate()
