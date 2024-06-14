@@ -99,7 +99,6 @@ class SectionThread(UUIDMixin):
 
 
 class Message(UUIDMixin, CreatedMixin):
-    # message_body = CKEditor5Field('message_body', null=False, blank=False, max_length=2000, config_name='extends')
     message_body = MartorField('message_body', null=False, max_length=4000)
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
