@@ -2,6 +2,7 @@ import { Table } from "reactstrap";
 import parse from 'html-react-parser';
 import { User } from "../User/User";
 import { formatDate } from "../utils";
+import MDEditor from '@uiw/react-md-editor';
 
 export function ListMessages({messages})
 {
@@ -25,7 +26,7 @@ export function ListMessages({messages})
             ) : messages.map(message => (
                     <tr key={message.id}>
                         <td>{<User userId={message.user}/>}</td>
-                        <td>{parse(message.message_body)}</td>
+                        <td>{<div data-color-mode="light"><MDEditor.Markdown source={message.message_body}/></div>}</td>
                         <td>{formatDate(message.created)}</td>
                     </tr>
                 )

@@ -30,12 +30,12 @@ export function Login() {
             setValidLogin(undefined)
             navigate("/")
           })
-          .catch((e) => setValidLogin("Name or password is incorrect."))
+          .catch((e) => setValidLogin("Name or password is incorrect. " + e + e.data))
     }
   
     return (
     <>
-    <p hidden={!validLogin}>{validLogin}</p>
+    <p hidden={!validLogin} class='error-message'>{validLogin}</p>
     <Form onSubmit={submitDataAdd}>
         <FormGroup row>
           <Label
@@ -84,8 +84,8 @@ export function Login() {
               size: 10
             }}
           >
-            <Button>
-              Submit
+            <Button name="submit">
+              Login
             </Button>
           </Col>
         </FormGroup>

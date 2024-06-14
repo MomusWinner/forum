@@ -103,7 +103,7 @@ export function Registration() {
               size: 10
             }}
           >
-            <Button>
+            <Button name="submit">
               Submit
             </Button>
           </Col>
