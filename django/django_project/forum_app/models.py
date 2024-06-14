@@ -4,7 +4,8 @@ from datetime import datetime, timezone
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractUser
-from django_ckeditor_5.fields import CKEditor5Field
+from martor.models import MartorField
+
 
 NAME_MAX_LENGTH = 100
 TITLE_MAX_LEN = 100
@@ -46,7 +47,7 @@ class CreatedMixin(models.Model):
 
 class User(UUIDMixin, AbstractUser):
     class Meta:
-        db_table = '"forum"."user"'
+        db_table = "user"
         ordering = ['last_name']
         verbose_name = 'user'
         verbose_name_plural = 'users'
@@ -61,7 +62,7 @@ class Thread(UUIDMixin, CreatedMixin):
         return self.title
 
     class Meta:
-        db_table = '"forum"."thread"'
+        db_table = "thread"
         ordering = ['title']
         verbose_name = 'thread'
         verbose_name_plural = 'threads'
@@ -75,7 +76,7 @@ class Section(UUIDMixin):
         return self.name
 
     class Meta:
-        db_table = '"forum"."section"'
+        db_table = "section"
         ordering = ['name']
         verbose_name = 'section'
         verbose_name_plural = 'sections'
@@ -89,7 +90,7 @@ class SectionThread(UUIDMixin):
         return f'{self.section}: {self.thread}'
 
     class Meta:
-        db_table = '"forum"."section_thread"'
+        db_table = "section_thread"
         unique_together = (
             ('section', 'thread'),
         )
@@ -98,7 +99,8 @@ class SectionThread(UUIDMixin):
 
 
 class Message(UUIDMixin, CreatedMixin):
-    message_body = CKEditor5Field('message_body', null=False, blank=False, max_length=2000, config_name='extends')
+    # message_body = CKEditor5Field('message_body', null=False, blank=False, max_length=2000, config_name='extends')
+    message_body = MartorField('message_body', null=False, max_length=4000)
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 
@@ -106,7 +108,7 @@ class Message(UUIDMixin, CreatedMixin):
         return f'{self.message_body}'
 
     class Meta:
-        db_table = '"forum"."message"'
+        db_table = "message"
         ordering = ['created']
         verbose_name = 'message'
         verbose_name_plural = 'messages'

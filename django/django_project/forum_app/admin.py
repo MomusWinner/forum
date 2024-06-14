@@ -1,11 +1,8 @@
 from django.contrib import admin
-from typing import Any
-from django.contrib import admin
-from django.db.models.query import QuerySet
 from .models import User, Section, Thread, Message, SectionThread
-from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.admin import UserAdmin
-
+from django.db import models
+from martor.widgets import AdminMartorWidget
 
 admin.site.register(User, UserAdmin)
 
@@ -29,4 +26,6 @@ class ThreadAdmin(admin.ModelAdmin):
 
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
-    model = Message
+    formfield_overrides = {
+        models.TextField: {'widget': AdminMartorWidget},
+    }
