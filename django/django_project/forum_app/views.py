@@ -1,10 +1,10 @@
 """Forum views."""
-import serializers
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import BasePermission
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
+from . import serializers
 from .models import Message, Section, Thread, User
 
 
