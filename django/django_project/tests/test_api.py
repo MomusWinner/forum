@@ -106,6 +106,26 @@ class ThreadTest(TestCase):
             delete_expected=status.HTTP_403_FORBIDDEN,
         )
 
+    def test_get_by_null_section(self) -> None:
+        self.client.force_authenticate(user=self._user, token=self._user_token)
+        thread = Thread.objects.create(title='test_title')
+        thread.save()
+        respons_code = self.client.get(f'{self.url}?sectionId={thread.id}').status_code
+        self.assertEqual(
+            respons_code, status.HTTP_404_NOT_FOUND,
+        )
+
+    def test_get_by_section(self) -> None:
+        self.client.force_authenticate(user=self._user, token=self._user_token)
+        section = Section.objects.create(name='test_sections')
+        thread = Thread.objects.create(title='test_title')
+        thread.sections.add(section)
+        thread.save()
+        section.save()
+        self.assertEqual(
+            self.client.get(f'{self.url}?sectionId={section.id}').status_code, status.HTTP_200_OK,
+        )
+
 
 class SectionTest(TestCase):
     def setUp(self) -> None:
