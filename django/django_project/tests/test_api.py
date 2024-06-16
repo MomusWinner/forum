@@ -147,8 +147,6 @@ class SectionTest(TestCase):
         self.manage(
             'some_section_supper_user',
             self._superuser, self._superuser_token,
-            post_expected=status.HTTP_201_CREATED,
-            put_expected=status.HTTP_200_OK,
             delete_expected=status.HTTP_204_NO_CONTENT,
         )
 
@@ -156,7 +154,5 @@ class SectionTest(TestCase):
         self.manage(
             'some_section_user',
             self._user, self._user_token,
-            post_expected=status.HTTP_201_CREATED,
-            put_expected=status.HTTP_200_OK,
             delete_expected=status.HTTP_403_FORBIDDEN,
         )
