@@ -33,7 +33,7 @@ export function CreateMessageModal({onCreate, threadId})
 
     return (
         <div>
-            <Button onClick={toggle}>
+            <Button id="create-message-button" onClick={toggle}>
             Create new message
             </Button>
             <Modal fullscreen
@@ -52,7 +52,7 @@ export function CreateMessageModal({onCreate, threadId})
                 </div>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onClick={createMessage}>
+                    <Button color="primary" id="create-message-modal-button" onClick={createMessage}>
                     Create
                     </Button>
                     <Button color="secondary" onClick={toggle}>

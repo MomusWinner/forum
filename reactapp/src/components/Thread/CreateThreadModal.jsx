@@ -57,7 +57,7 @@ export function CreateThreadModal({onCreate})
 
     return (
         <div>
-            <Button onClick={toggle}>
+            <Button id="create-thread-button" onClick={toggle}>
             Create new thread
             </Button>
             <Modal
@@ -84,7 +84,7 @@ export function CreateThreadModal({onCreate})
                     />
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onClick={createThread}>
+                    <Button id="create-thread-modal-button" color="primary" onClick={createThread}>
                     Create
                     </Button>
                     <Button color="secondary" onClick={toggle}>
