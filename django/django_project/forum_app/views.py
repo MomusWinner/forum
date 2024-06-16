@@ -1,4 +1,5 @@
 """Forum views."""
+from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import BasePermission
 from rest_framework.response import Response
@@ -48,7 +49,10 @@ class ThreadViewSet(ModelViewSet):
         else:
             section_id = request.query_params.get('sectionId')
             if section_id:
-                threads = list(Section.objects.filter(id=section_id))[0].threads
+                sections = list(Section.objects.filter(id=section_id))
+                if not sections:
+                    return Response(status=status.HTTP_404_NOT_FOUND)
+                threads = sections[0].threads
             else:
                 threads = Thread.objects.all()
         serializer = self.get_serializer(threads, many=True)
