@@ -17,7 +17,7 @@ auth_user_password: str = 'test_user_password'
 
 VIEW_HOST = getenv('TEST_REACT_HOST')
 LIVE_SERVER_HOST = getenv('TEST_SERVER_HOST')
-LIVE_SERVER_PORT = getenv('TEST_SERVER_PORT')
+LIVE_SERVER_PORT = int(getenv('TEST_SERVER_PORT'))
 
 REGISTRATION = 'registration'
 LOGIN = 'login'
