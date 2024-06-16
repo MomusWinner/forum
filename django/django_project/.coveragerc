@@ -5,3 +5,5 @@ omit =
     */site-packages/*
     */distutils/*
     tests/*
+    manage.py
+    __init__.py
