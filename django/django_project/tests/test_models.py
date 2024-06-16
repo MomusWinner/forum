@@ -1,12 +1,16 @@
-from django.test import TestCase
+"""Models test."""
 from datetime import datetime, timezone
+from types import MappingProxyType
+
 from django.core.exceptions import ValidationError
+from django.test import TestCase
+
 from forum_app import models
 
-THREAD = {"title": "test_thread"}
-SECTION = {"name": "test_section"}
-USER = {"username": "test_username", "password": "test_Password112233"}
-MESSAGE = {"message_body": "some message"}
+THREAD = MappingProxyType({'title': 'test_thread'})
+SECTION = MappingProxyType({'name': 'test_section'})
+USER = MappingProxyType({'username': 'test_username', 'password': 'test_Password112233'})
+MESSAGE = MappingProxyType({'message_body': 'some message'})
 
 
 class TestLinks(TestCase):
@@ -37,29 +41,27 @@ class TestLinks(TestCase):
 
 valid_tests = (
     (models.check_created, datetime(2007, 1, 1, 1, 1, 1, 1, tzinfo=timezone.utc)),
-    # (models.check_modified, datetime(2007, 1, 1, 1, 1, 1, 1, tzinfo=timezone.utc)),
-    # (models.check_positive, 1),
-    # (models.check_year, 2007),
 )
+
 invalid_tests = (
     (models.check_created, datetime(3000, 1, 1, 1, 1, 1, 1, tzinfo=timezone.utc)),
-    # (models.check_modified, datetime(3000, 1, 1, 1, 1, 1, 1, tzinfo=timezone.utc)),
-    # (models.check_positive, -1),
-    # (models.check_year, 3000),
 )
 
 
-def create_validation_test(validator, value, valid=True):
+def create_validation_test(validator, validator_args, valid=True):
     def test(self):
         with self.assertRaises(ValidationError):
-            validator(value)
-    return lambda _: validator(value) if valid else test
+            validator(validator_args)
+    return lambda _: validator(validator_args) if valid else test
 
 
 invalid_methods = {
-    f'test_invalid_{args[0].__name__}': create_validation_test(*args, False) for args in invalid_tests
+    f'test_invalid_{args[0].__name__}':
+    create_validation_test(*args, valid=False) for args in invalid_tests
 }
 valid_methods = {
-    f'test_valid_{args[0].__name__}': create_validation_test(*args) for args in valid_tests
+    f'test_valid_{args[0].__name__}':
+    create_validation_test(*args) for args in valid_tests
 }
+
 TestValidators = type('TestValidators', (TestCase,), invalid_methods | valid_methods)

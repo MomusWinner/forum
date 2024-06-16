@@ -1,114 +1,108 @@
+"""API tests."""
 from django.test import TestCase
-from rest_framework.test import APIClient
 from rest_framework import status
 from rest_framework.authtoken.models import Token
-from forum_app.models import User, Message, Thread, Section
+from rest_framework.test import APIClient
+
+from forum_app.models import Message, Section, Thread, User
 
 API = '/api/v1/'
+
+
+def get_user() -> User:
+    return User.objects.create(username='user_test', password='test')
+
+
+def get_superuser() -> User:
+    return User.objects.create(username='admin_test', password='test', is_superuser=True)
 
 
 class MessageTest(TestCase):
     def setUp(self) -> None:
         self.client = APIClient()
-        self.url = API + 'message/'
+        self.url = f'{API}message/'
 
-        self.thread = Thread.objects.create(title="test_thread")
-        self.user = User.objects.create(username='user_test', password='test')
-        self.superuser = User.objects.create(
-            username='admin_test', password='test', is_superuser=True,
-        )
-
-        self.user_token = Token(user=self.user)
-        self.superuser_token = Token(user=self.superuser)
+        self._thread = Thread.objects.create(title='test_thread')
+        self._user, self._superuser = get_user(), get_superuser()
+        self._user_token = Token(user=self._user)
+        self._superuser_token = Token(user=self._superuser)
 
     def manage(
         self,
         user: User,
         token: Token,
-        post_expected: int,
-        put_expected: int,
         delete_expected: int,
-    ):
+    ) -> None:
         self.client.force_authenticate(user=user, token=token)
 
         self.assertEqual(self.client.get(self.url).status_code, status.HTTP_200_OK)
         self.assertEqual(self.client.head(self.url).status_code, status.HTTP_200_OK)
         self.assertEqual(self.client.options(self.url).status_code, status.HTTP_200_OK)
 
-        post_put_data = {"message_body": "<p>test messgae</p>", "thread": self.thread.id}
-        self.assertEqual(self.client.post(self.url, post_put_data).status_code, post_expected)
-        created_id = Message.objects.create(message_body="<p>test_message</p>", thread=self.thread).id
+        post_put_data = {'message_body': 'test messgae', 'thread': self._thread.id}
+        self.assertEqual(
+            self.client.post(self.url, post_put_data).status_code, status.HTTP_201_CREATED,
+        )
+        created_id = Message.objects.create(message_body='test_message', thread=self._thread).id
         instance_url = f'{self.url}{created_id}/'
 
         put_response = self.client.put(instance_url, post_put_data)
-        self.assertEqual(put_response.status_code, put_expected)
+        self.assertEqual(put_response.status_code, status.HTTP_200_OK)
 
         delete_response = self.client.delete(instance_url, {})
         self.assertEqual(delete_response.status_code, delete_expected)
 
-    def test_superuser(self):
+    def test_superuser(self) -> None:
         self.manage(
-            self.superuser, self.superuser_token,
-            post_expected=status.HTTP_201_CREATED,
-            put_expected=status.HTTP_200_OK,
+            self._superuser, self._superuser_token,
             delete_expected=status.HTTP_204_NO_CONTENT,
         )
 
-    def test_user(self):
+    def test_user(self) -> None:
         self.manage(
-            self.user, self.user_token,
-            post_expected=status.HTTP_201_CREATED,
-            put_expected=status.HTTP_200_OK,
+            self._user, self._user_token,
             delete_expected=status.HTTP_403_FORBIDDEN,
         )
 
 
 class ThreadTest(TestCase):
     def setUp(self) -> None:
-        self.post_put_data = {"title": "test_thread", "sections" : []}
         self.client = APIClient()
-        self.url = API+'thread/'
+        self.url = f'{API}thread/'
 
-        self.user = User.objects.create(username='user_test', password='test')
-        self.superuser = User.objects.create(
-            username='admin_test', password='test', is_superuser=True,
-        )
-
-        self.user_token = Token(user=self.user)
-        self.superuser_token = Token(user=self.superuser)
+        self._post_put_data = {'title': 'test_thread', 'sections': []}
+        self._user, self._superuser = get_user(), get_superuser()
+        self._user_token = Token(user=self._user)
+        self._superuser_token = Token(user=self._superuser)
 
     def manage(
         self, user: User, token: Token,
-        post_expected: int,
-        put_expected: int,
         delete_expected: int,
-    ):
+    ) -> None:
         self.client.force_authenticate(user=user, token=token)
         self.assertEqual(self.client.get(self.url).status_code, status.HTTP_200_OK)
         self.assertEqual(self.client.head(self.url).status_code, status.HTTP_200_OK)
         self.assertEqual(self.client.options(self.url).status_code, status.HTTP_200_OK)
-        self.assertEqual(self.client.post(self.url, self.post_put_data).status_code, post_expected)
-        created_id = Thread.objects.create(title="some").id
+        self.assertEqual(
+            self.client.post(self.url, self._post_put_data).status_code, status.HTTP_201_CREATED,
+        )
+        created_id = Thread.objects.create(title='some').id
         instance_url = f'{self.url}{created_id}/'
-        put_response = self.client.put(instance_url, self.post_put_data)
-        self.assertEqual(put_response.status_code, put_expected)
+        put_response = self.client.put(instance_url, self._post_put_data)
+        self.assertEqual(put_response.status_code, status.HTTP_200_OK)
 
         delete_response = self.client.delete(instance_url, {})
         self.assertEqual(delete_response.status_code, delete_expected)
 
-    def test_superuser(self):
+    def test_superuser(self) -> None:
         self.manage(
-            self.superuser, self.superuser_token,
-            post_expected=status.HTTP_201_CREATED,
-            put_expected=status.HTTP_200_OK,
+            self._superuser, self._superuser_token,
             delete_expected=status.HTTP_204_NO_CONTENT,
         )
 
     def test_user(self):
         self.manage(
-            self.user, self.user_token,
-            post_expected=status.HTTP_201_CREATED,
-            put_expected=status.HTTP_200_OK,
+            self._user, self._user_token,
             delete_expected=status.HTTP_403_FORBIDDEN,
         )
 
@@ -116,56 +110,52 @@ class ThreadTest(TestCase):
 class SectionTest(TestCase):
     def setUp(self) -> None:
         self.client = APIClient()
-        self.url = API + 'section/'
+        self.url = f'{API}section/'
 
-        self.user = User.objects.create(username='user_test', password='test')
-        self.superuser = User.objects.create(
-            username='admin_test', password='test', is_superuser=True,
-        )
-
-        self.user_token = Token(user=self.user)
-        self.superuser_token = Token(user=self.superuser)
+        self._user, self._superuser = get_user(), get_superuser()
+        self._user_token = Token(user=self._user)
+        self._superuser_token = Token(user=self._superuser)
 
     def manage(
         self,
         section_name: str,
         user: User,
         token: Token,
-        post_expected: int,
-        put_expected: int,
         delete_expected: int,
-    ):
+    ) -> None:
         self.client.force_authenticate(user=user, token=token)
 
         self.assertEqual(self.client.get(self.url).status_code, status.HTTP_200_OK)
         self.assertEqual(self.client.head(self.url).status_code, status.HTTP_200_OK)
         self.assertEqual(self.client.options(self.url).status_code, status.HTTP_200_OK)
 
-        post_data = {'name': 'test_section_post_'+str(user.id), 'threads': []}
-        self.assertEqual(self.client.post(self.url, post_data).status_code, post_expected)
+        post_data = {'name': f'test_section_post_{str(user.id)}', 'threads': []}
+        self.assertEqual(
+            self.client.post(self.url, post_data).status_code, status.HTTP_201_CREATED,
+        )
         created_id = Section.objects.create(name=section_name).id
         instance_url = f'{self.url}{created_id}/'
 
-        put_data = {'name': 'test_section_put_'+str(user.id), 'threads': []}
+        put_data = {'name': f'test_section_put_{str(user.id)}', 'threads': []}
         put_response = self.client.put(instance_url, put_data)
-        self.assertEqual(put_response.status_code, put_expected)
+        self.assertEqual(put_response.status_code, status.HTTP_200_OK)
 
         delete_response = self.client.delete(instance_url, {})
         self.assertEqual(delete_response.status_code, delete_expected)
 
-    def test_superuser(self):
+    def test_superuser(self) -> None:
         self.manage(
-            "some_section_supper_user",
-            self.superuser, self.superuser_token,
+            'some_section_supper_user',
+            self._superuser, self._superuser_token,
             post_expected=status.HTTP_201_CREATED,
             put_expected=status.HTTP_200_OK,
             delete_expected=status.HTTP_204_NO_CONTENT,
         )
 
-    def test_user(self):
+    def test_user(self) -> None:
         self.manage(
-            "some_section_user",
-            self.user, self.user_token,
+            'some_section_user',
+            self._user, self._user_token,
             post_expected=status.HTTP_201_CREATED,
             put_expected=status.HTTP_200_OK,
             delete_expected=status.HTTP_403_FORBIDDEN,

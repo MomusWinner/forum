@@ -21,6 +21,6 @@ RUN pip install -r requirements.txt
 # копируем всё что осталось.
 
 COPY --chmod=0755 *.sh /usr/src/app/
-COPY . .
+COPY forum forum_app ./manage.py .
 
 ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
