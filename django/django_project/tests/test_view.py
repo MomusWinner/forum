@@ -28,7 +28,7 @@ LOGIN = 'login'
 FORUM = 'forum'
 
 
-def authorize(driver: WebDriver) -> None:
+def _authorize(driver: WebDriver) -> None:
     driver.get(VIEW_HOST + LOGIN)
     input_username = driver.find_element(By.NAME, 'username')
     input_userpassword = driver.find_element(By.NAME, 'password')
@@ -40,7 +40,7 @@ def authorize(driver: WebDriver) -> None:
     wait.until(lambda driver: driver.current_url == VIEW_HOST)
 
 
-def registrate(driver: WebDriver) -> None:
+def _registrate(driver: WebDriver) -> None:
     reqistration_url = VIEW_HOST + REGISTRATION
     driver.get(reqistration_url)
     input_username = driver.find_element(By.NAME, 'username')
@@ -55,56 +55,80 @@ def registrate(driver: WebDriver) -> None:
     wait.until(lambda driver: driver.current_url == VIEW_HOST + LOGIN)
 
 
-def get_driver():
+def _get_driver():
     options = Options()
     return webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
 
 class RegistrationAuthorizationTest(LiveServerTestCase):
+    """Test registration and authorization."""
+
     host = LIVE_SERVER_HOST
     port = LIVE_SERVER_PORT
 
     def setUp(self):
-        self.driver = get_driver()
+        """Init test."""
+        self.driver = _get_driver()
 
-    def test_registration(self):
-        registrate(self.driver)
-        authorize(self.driver)
-
-    def tearDown(self):
-        self.driver.quit()
+    def test_registration_authorization(self):
+        """Test registration and authorization."""
+        _registrate(self.driver)
+        _authorize(self.driver)
 
 
 class UnauthorizedTest(LiveServerTestCase):
+    """Test unauthorized pages."""
+
     host = LIVE_SERVER_HOST
     port = LIVE_SERVER_PORT
 
     authorization_required_pages = (FORUM, THREAD, PROFILE)
 
     def setUp(self):
-        self.driver = get_driver()
+        """Init test."""
+        self.driver = _get_driver()
 
-    def check_authorization_required_page(self, page: str):
+    def test_anauthorized_pages(self):
+        """Anauthorized page should redirect to login page."""
+        for page in self.authorization_required_pages:
+            self._check_authorization_required_page(page)
+
+    def _check_authorization_required_page(self, page: str):
         self.driver.get(VIEW_HOST + page)
         wait = WebDriverWait(self.driver, 10)
         wait.until(lambda driver: driver.current_url == VIEW_HOST + LOGIN)
 
-    def test_anauthorized_pages(self):
-        for page in self.authorization_required_pages:
-            self.check_authorization_required_page(page)
-
 
 class CreateThreadAndMessageTest(LiveServerTestCase):
+    """Test thread and message creation."""
+
     host = LIVE_SERVER_HOST
     port = LIVE_SERVER_PORT
 
     def setUp(self) -> None:
-        self.driver = get_driver()
+        """Init test."""
+        self.driver = _get_driver()
 
-    def find_element_by_text(self, text) -> None | WebElement:
+    def test_create_thread_and_message(self) -> None:
+        """Test thread and message creation."""
+        _registrate(self.driver)
+        _authorize(self.driver)
+
+        thread_title = 'some_thread_title'
+        message_body = 'some_message'
+
+        self._create_thread(thread_title)
+
+        wait = WebDriverWait(self.driver, 5)
+        wait.until(lambda _: self._find_element_by_text(thread_title) is not None)
+        self._find_element_by_text(thread_title).click()
+
+        self._create_message(message_body)
+
+    def _find_element_by_text(self, text) -> None | WebElement:
         return self.driver.find_element(By.XPATH, f"//*[contains(text(), '{text}')]")
 
-    def create_thread(self, thread_title: str) -> None:
+    def _create_thread(self, thread_title: str) -> None:
         self.driver.get(VIEW_HOST + FORUM)
         create_thread_button = self.driver.find_element(By.ID, 'create-thread-button')
         create_thread_button.click()
@@ -115,25 +139,10 @@ class CreateThreadAndMessageTest(LiveServerTestCase):
         title.send_keys(thread_title)
         create_thread_modal_button.click()
 
-    def create_message(self, message_body):
+    def _create_message(self, message_body):
         wait = WebDriverWait(self.driver, 5)
         wait.until(lambda driver: driver.find_element(By.ID, 'create-message-button')).click()
         self.driver.find_element(By.CLASS_NAME, 'w-md-editor-text-input').send_keys(message_body)
         self.driver.find_element(By.ID, 'create-message-modal-button').click()
         wait = WebDriverWait(self.driver, 5)
-        wait.until(lambda _: self.find_element_by_text(message_body) is not None)
-
-    def test_create_thread_and_message(self) -> None:
-        registrate(self.driver)
-        authorize(self.driver)
-
-        thread_title = 'some_thread_title'
-        message_body = 'some_message'
-
-        self.create_thread(thread_title)
-
-        wait = WebDriverWait(self.driver, 5)
-        wait.until(lambda _: self.find_element_by_text(thread_title) is not None)
-        self.find_element_by_text(thread_title).click()
-
-        self.create_message(message_body)
+        wait.until(lambda _: self._find_element_by_text(message_body) is not None)

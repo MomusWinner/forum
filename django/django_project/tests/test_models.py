@@ -14,7 +14,10 @@ MESSAGE = MappingProxyType({'message_body': 'some message'})
 
 
 class TestLinks(TestCase):
+    """Test links between models."""
+
     def test_thread_section(self):
+        """Test thead section link."""
         thread = models.Thread.objects.create(**THREAD)
         section = models.Section.objects.create(**SECTION)
         thread.save()
@@ -23,6 +26,7 @@ class TestLinks(TestCase):
         self.assertEqual(len(thread_section_link), 1)
 
     def test_user_thread(self):
+        """Test user thread link."""
         thread = models.Thread.objects.create(**THREAD)
         user = models.User.objects.create(**USER)
         thread.user = user
@@ -30,6 +34,7 @@ class TestLinks(TestCase):
         self.assertEqual(len(models.Thread.objects.filter(user=user.id)), 1)
 
     def test_user_message(self):
+        """Test user message link."""
         thread = models.Thread.objects.create(**THREAD)
         thread.save()
         message = models.Message.objects.create(thread=thread, **MESSAGE)
@@ -48,7 +53,7 @@ invalid_tests = (
 )
 
 
-def create_validation_test(validator, validator_args, valid=True):
+def _create_validation_test(validator, validator_args, valid=True):
     def test(self):
         with self.assertRaises(ValidationError):
             validator(validator_args)
@@ -57,11 +62,11 @@ def create_validation_test(validator, validator_args, valid=True):
 
 invalid_methods = {
     f'test_invalid_{args[0].__name__}':
-    create_validation_test(*args, valid=False) for args in invalid_tests
+    _create_validation_test(*args, valid=False) for args in invalid_tests
 }
 valid_methods = {
     f'test_valid_{args[0].__name__}':
-    create_validation_test(*args) for args in valid_tests
+    _create_validation_test(*args) for args in valid_tests
 }
 
 TestValidators = type('TestValidators', (TestCase,), invalid_methods | valid_methods)
