@@ -39,7 +39,7 @@ export function Forum()
     return(
         <div className="layout">
             <Sections token={getToken(navigate)} onChangeSection={setSectionId}/>
-            <div style={{flex: 1}}>
+            <div id="threads-list" style={{flex: 1}}>
                 <CreateThreadModal onCreate={getThreads}/>
                 <ListThreads threads={threads}/>
             </div>

@@ -4,6 +4,7 @@ import { HOST, USER } from "../../api-path";
 import { useNavigate } from "react-router-dom";
 import { getToken } from "../utils"
 import { Spinner } from "reactstrap";
+import "./Profile.css";
 
 export function Profile()
 {
@@ -26,9 +27,9 @@ export function Profile()
     return(
     <div>
         {user? 
-        <div>
-        <h1>{user.username}</h1>
-        <p>{user.email}</p>
+        <div id="profile-container">
+        <h1>Username: {user.username}</h1>
+        <p>email: {user.email? user.email : "..."}</p>
         </div>
         :
         <Spinner/>

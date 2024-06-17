@@ -2,8 +2,8 @@ import { Form, FormGroup, Label, Col, Input, FormFeedback, Button } from "reacts
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { API_LOGIN, HOST }  from "../api-path.js"
-
+import { API_LOGIN, HOST }  from "../../api-path.js"
+import "./Login.css";
 
 export function Login() {
     const [user, setUser] = useState({})
@@ -30,13 +30,13 @@ export function Login() {
             setValidLogin(undefined)
             navigate("/")
           })
-          .catch((e) => setValidLogin("Name or password is incorrect. " + e + e.data))
+          .catch((e) => setValidLogin("Name or password is incorrect."))
     }
   
     return (
     <>
-    <p hidden={!validLogin} class='error-message'>{validLogin}</p>
-    <Form onSubmit={submitDataAdd}>
+    <p hidden={!validLogin} className='login-message'>{validLogin}</p>
+    <Form onSubmit={submitDataAdd} id="login-form">
         <FormGroup row>
           <Label
             for="exampleUsername"

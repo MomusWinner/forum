@@ -2,8 +2,8 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Navbar, NavbarBrand } from 'reactstrap';
 import { Routes, Route } from "react-router-dom"
-import { Registration } from "./components/Registartion.jsx"
-import { Login } from './components/Login.jsx';
+import { Registration } from "./components/Registration/Registartion.jsx"
+import { Login } from './components/Login/Login.jsx';
 import { Home } from './components/Home.jsx';
 import { Forum } from './components/Forum/Forum.jsx';
 import { Thread } from './components/Thread/Thread.jsx';
@@ -21,7 +21,7 @@ function App() {
 
   return (
       <div>
-        <Navbar>
+        <Navbar color='dark' dark>
           <NavbarBrand href="/">
             Home
           </NavbarBrand>

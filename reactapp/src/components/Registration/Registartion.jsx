@@ -2,6 +2,7 @@ import { Form, FormGroup, Label, Col, Input, FormFeedback, Button } from "reacts
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "./Registration.css";
 
 export function Registration() {
     const [user, setUser] = useState({})
@@ -20,7 +21,7 @@ export function Registration() {
       const data = {
           username: user["username"],
           password: user["password"],
-          email: user["email"]
+          email: user["email"],
       }
       console.log(data)
   
@@ -36,7 +37,7 @@ export function Registration() {
     }
   
     return (
-    <Form onSubmit={submitDataAdd}>
+    <Form id="registration-form" onSubmit={submitDataAdd}>
         <FormGroup row>
           <Label
             for="username"
