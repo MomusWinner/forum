@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { getToken } from "../utils"
 import { Spinner } from "reactstrap";
 import "./Profile.css";
+import { ListThreads } from "../ListThreads/ListThreads";
 
 export function Profile()
 {
@@ -30,6 +31,8 @@ export function Profile()
         <div id="profile-container">
         <h1>Username: {user.username}</h1>
         <p>email: {user.email? user.email : "..."}</p>
+        <h1>Threads</h1>
+        <ListThreads threads={user.threads}/>
         </div>
         :
         <Spinner/>
