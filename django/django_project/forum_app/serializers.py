@@ -4,12 +4,6 @@ from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField
 from .models import Message, Section, Thread, User
 
 
-class UserSerializerDAB(ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('id', 'username', 'email')
-
-
 class SectionSerializer(ModelSerializer):
     threads = PrimaryKeyRelatedField(queryset=Thread.objects.all(), many=True)
 
@@ -50,3 +44,11 @@ class ThreadSerializer(ModelSerializer):
     class Meta:
         model = Thread
         fields = ('id', 'title', 'user_id', 'sections', 'created', 'messages')
+
+
+class UserSerializerDAB(ModelSerializer):
+    threads = ThreadSerializer(read_only=True, many=True, source='thread_set')
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email', 'threads')
