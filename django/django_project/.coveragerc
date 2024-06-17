@@ -4,6 +4,3 @@ omit =
     */dist-packages/*
     */site-packages/*
     */distutils/*
-    tests/*
-    manage.py
-    __init__.py
