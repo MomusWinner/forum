@@ -5,3 +5,7 @@
     margin-left: auto;
     margin-right: auto;
 }
+
+.login-message{
+    color: red;
+}

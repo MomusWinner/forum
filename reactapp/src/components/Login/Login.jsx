@@ -35,7 +35,6 @@ export function Login() {
   
     return (
     <>
-    <p hidden={!validLogin} className='login-message'>{validLogin}</p>
     <Form onSubmit={submitDataAdd} id="login-form">
         <FormGroup row>
           <Label
@@ -84,6 +83,7 @@ export function Login() {
               size: 10
             }}
           >
+            <p hidden={!validLogin} className='login-message'>{validLogin}</p>
             <Button name="submit">
               Login
             </Button>
